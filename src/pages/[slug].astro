@@ -1,0 +1,24 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { getAllPagesWithSlugs, getPageBySlug } from "../lib/api";
+
+export async function getStaticPaths() {
+  const pagesWithSlugs = await getAllPagesWithSlugs();
+
+  return pagesWithSlugs.edges.map(({ node }) => {
+    return {
+      params: { slug: node.slug },
+    };
+  });
+}
+
+const { slug } = Astro.params;
+const page = await getPageBySlug(slug);
+console.log(page);
+---
+
+<Layout title="page">
+  <article class="my-4" set:html={page.content}>
+    <h1 class="mb-4 text-4xl font-bold">{page.title}</h1>
+  </article>
+</Layout>

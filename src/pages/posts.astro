@@ -1,0 +1,18 @@
+---
+import Layout from "../layouts/Layout.astro";
+const res = await fetch("http://wordpress-headless.test/wp-json/wp/v2/posts");
+const posts = await res.json();
+console.log(posts[0]._links.author);
+---
+
+<Layout title="posts">
+  <h1 class="text-4xl text-center">Astro + WordPress 🚀</h1>
+  {
+    posts.map((post) => (
+      <article class="my-4 p-2">
+        <h2 class="text-2xl" set:html={post.title.rendered} />
+        <p set:html={post.excerpt.rendered} />
+      </article>
+    ))
+  }
+</Layout>
